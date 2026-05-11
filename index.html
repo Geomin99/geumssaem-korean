@@ -3,305 +3,393 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>금쌤국어_015 운영용</title>
+<title>금쌤국어_016 최종 운영용</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{--ivory:#FAF7F0;--paper:#FFFDF8;--brown:#6B4F3F;--dark:#3A2E2A;--gold:#C89B3C;--line:#E2D6C6;--muted:#7A6F65;--danger:#B94A3A;--blue:#4E86B8}
-*{box-sizing:border-box}body{margin:0;font-family:Arial,"Noto Sans KR",sans-serif;background:var(--ivory);color:#2b2b2b}
-.app{max-width:1200px;margin:0 auto;padding:18px}.top{background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px;margin-bottom:16px;display:flex;justify-content:space-between;gap:14px;align-items:center}
-h1{margin:0;color:var(--dark)}.small{font-size:13px;color:var(--muted);line-height:1.6}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.card{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:16px}
-label{display:block;font-weight:800;color:var(--brown);margin:10px 0 6px}input,select,textarea{width:100%;border:1px solid #D8C8B8;border-radius:12px;padding:10px;background:var(--paper);font-size:14px}textarea{min-height:80px}
-.btn{border:0;border-radius:12px;padding:10px 14px;margin:4px 4px 4px 0;cursor:pointer;font-weight:800}.primary{background:var(--brown);color:white}.gold{background:var(--gold);color:white}.sub{background:#EFE6D9;color:var(--dark)}.danger{background:var(--danger);color:white}.blue{background:var(--blue);color:white}
-.nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.nav button.active{background:var(--brown);color:white}
-section{display:none}section.active{display:block}
-table{width:100%;border-collapse:separate;border-spacing:0;background:white;border:1px solid var(--line);border-radius:14px;overflow:hidden}th{background:#EFE6D9;padding:10px}td{padding:9px;border-top:1px solid #F0E7DC;text-align:center;font-size:13px}.scroll{overflow-x:auto}
-.badge{display:inline-block;background:#F2E3C5;color:var(--brown);font-weight:900;border-radius:999px;padding:7px 11px;font-size:12px}.ok{background:#E7F4EB;color:#246B41}.warn{background:#FFF1D1;color:#9B6B12}.err{background:#FCE7E2;color:#993727}
-.schedule-row{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:8px;align-items:end;border:1px solid var(--line);border-radius:14px;background:var(--paper);padding:10px;margin-bottom:8px}.x{width:34px;height:34px;border:0;border-radius:50%;background:var(--danger);color:white;font-weight:900}
-.roster{display:grid;gap:8px}.roster-row{display:grid;grid-template-columns:1.1fr 2fr 1.3fr;gap:8px;align-items:center;border:1px solid var(--line);border-radius:14px;background:var(--paper);padding:10px}.status{border:1px solid var(--line);background:white;border-radius:999px;padding:7px 10px;font-weight:800;cursor:pointer}.status.active{background:var(--brown);color:white}
-pre{white-space:pre-wrap;background:#2a211f;color:#fff;border-radius:14px;padding:14px;overflow:auto}.hidden{display:none}
-@media(max-width:850px){.grid2,.grid3,.roster-row,.schedule-row{grid-template-columns:1fr}.top{flex-direction:column;align-items:flex-start}}
+:root{
+  --ivory:#FAF7F0;--paper:#FFFDF8;--brown:#6B4F3F;--dark:#2F2522;--gold:#C89B3C;
+  --line:#E2D6C6;--muted:#776D66;--danger:#B94A3A;--blue:#4E86B8;--green:#3F8F5F;
+  --shadow:0 10px 28px rgba(58,46,42,.08);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ivory);font-family:Arial,"Noto Sans KR",sans-serif;color:#272727}
+.app{max-width:1240px;margin:0 auto;padding:18px}
+.top{background:rgba(255,255,255,.94);border:1px solid var(--line);border-radius:24px;padding:18px 22px;margin-bottom:16px;display:flex;justify-content:space-between;gap:16px;align-items:center;box-shadow:var(--shadow)}
+h1{margin:0;color:var(--dark);font-size:30px} h2{margin:0 0 16px;color:var(--dark)} h3{margin:18px 0 10px;color:var(--brown)}
+.subtitle{font-size:13px;color:var(--muted);margin-top:5px}
+.badge{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;background:#F2E3C5;color:var(--brown);padding:7px 11px;font-size:12px;font-weight:900;white-space:nowrap}
+.badge.ok{background:#E7F4EB;color:#246B41}.badge.warn{background:#FFF1D1;color:#8A5D0A}.badge.err{background:#FCE7E2;color:#993727}
+.nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}.nav button{border:0;border-radius:13px;padding:11px 14px;background:#EFE6D9;color:var(--dark);font-weight:900;cursor:pointer}.nav button.active{background:var(--brown);color:white}
+section{display:none} section.active{display:block}
+.card{background:rgba(255,255,255,.94);border:1px solid var(--line);border-radius:22px;padding:20px;margin-bottom:16px;box-shadow:var(--shadow)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+label{display:block;margin:10px 0 6px;color:var(--brown);font-weight:900;font-size:14px}
+input,select,textarea{width:100%;border:1px solid #D8C8B8;border-radius:13px;padding:11px;background:var(--paper);font-size:14px}
+textarea{min-height:86px;resize:vertical;line-height:1.55}
+.btn{border:0;border-radius:13px;padding:10px 14px;margin:4px 4px 4px 0;cursor:pointer;font-weight:900}
+.primary{background:var(--brown);color:white}.gold{background:var(--gold);color:white}.sub{background:#EFE6D9;color:var(--dark)}.danger{background:var(--danger);color:white}.blue{background:var(--blue);color:white}.green{background:var(--green);color:white}
+.small{font-size:13px;color:var(--muted);line-height:1.6}.scroll{overflow-x:auto}
+table{width:100%;border-collapse:separate;border-spacing:0;background:white;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+th{background:#EFE6D9;color:var(--dark);font-size:13px;padding:10px;white-space:nowrap}td{padding:9px;border-top:1px solid #F0E7DC;text-align:center;font-size:13px;vertical-align:middle}
+.stat{background:white;border:1px solid var(--line);border-radius:18px;padding:16px}.stat span{font-size:13px;color:var(--muted);font-weight:900}.stat b{display:block;font-size:26px;color:var(--dark);margin-top:8px}
+.empty{padding:18px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:16px;background:var(--paper)}
+.schedule-row{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:8px;align-items:end;border:1px solid var(--line);background:var(--paper);border-radius:15px;padding:10px;margin-bottom:8px}
+.x{width:36px;height:36px;border-radius:50%;border:0;background:var(--danger);color:white;font-weight:900;cursor:pointer}
+.room-card{background:white;border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:10px}.room-title{font-size:18px;font-weight:900;color:var(--dark);margin:8px 0}
+.roster{display:grid;gap:8px;margin-top:12px}.roster-row{display:grid;grid-template-columns:1.1fr 2fr 1.3fr;gap:10px;align-items:center;border:1px solid var(--line);background:var(--paper);border-radius:16px;padding:12px}
+.status{border:1px solid var(--line);background:white;color:var(--brown);border-radius:999px;padding:7px 10px;font-size:12px;font-weight:900;cursor:pointer}.status.active{background:var(--brown);color:white}
+.preview{white-space:pre-wrap;background:white;border:1px solid var(--line);border-radius:18px;padding:18px;line-height:1.65;min-height:220px}
+.login-wrap{max-width:760px;margin:32px auto}.login-card{background:white;border:1px solid var(--line);border-radius:24px;padding:28px;box-shadow:var(--shadow)}
+.hidden{display:none!important}.action-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.notice{border:1px solid #E8D39D;background:#FFF8E1;color:#6F5121;border-radius:16px;padding:14px;line-height:1.6}
+@media(max-width:900px){.top{flex-direction:column;align-items:flex-start}.grid2,.grid3,.grid4,.roster-row,.schedule-row{grid-template-columns:1fr}h1{font-size:25px}}
 </style>
 </head>
 <body>
 <div class="app">
   <div class="top">
-    <div><h1>금쌤국어_015 운영용</h1><div class="small">GitHub Pages 운영용 · 로그인 후 바로 사용</div></div>
-    <div><span id="connBadge" class="badge warn">연결 전</span> <span id="userBadge" class="badge">로그인 전</span></div>
+    <div><h1>금쌤국어_016 최종 운영용</h1><div class="subtitle">GitHub Pages + Supabase · 로그인 후 바로 사용</div></div>
+    <div><span id="serverBadge" class="badge warn">서버 준비 중</span> <span id="userBadge" class="badge">로그인 전</span></div>
   </div>
 
-  <div class="nav">
-    <button class="btn sub active" onclick="show('setup')">로그인</button>
-    <button class="btn sub" onclick="show('classes')">수업 관리</button>
-    <button class="btn sub" onclick="show('students')">학생 관리</button>
-    <button class="btn sub" onclick="show('attendance')">출석 관리</button>
-    <button class="btn sub" onclick="show('backup')">데이터</button>
+  <div id="loginOnly" class="login-wrap">
+    <div class="login-card">
+      <h2>금쌤국어 로그인</h2>
+      <p class="small">이메일과 비밀번호로 로그인하면 수업, 학생, 출석, 과제, 성적, 상담 기록을 사용할 수 있습니다.</p>
+      <label>이메일</label><input id="loginEmail" type="email" placeholder="이메일">
+      <label>비밀번호</label><input id="loginPassword" type="password" placeholder="비밀번호">
+      <button class="btn primary" onclick="signIn()">로그인</button>
+      <button class="btn sub" onclick="signUp()">회원가입</button>
+      <div id="authMsg" class="small"></div>
+      <div class="notice" style="margin-top:14px">웹주소로 접속해 로그인하면 서버 데이터를 불러옵니다.</div>
+    </div>
   </div>
 
-  <section id="setup" class="active">
-    <input type="hidden" id="supabaseUrl" value="https://xvngnokfcuixyysxbqvi.supabase.co">
-    <input type="hidden" id="supabaseKey" value="sb_publishable_MsZjTYFJEAhQsvLUTkDt8Q_NETvCA3r">
+  <div id="mainApp" class="hidden">
+    <div class="nav" id="nav"></div>
 
-    <div class="grid2">
+    <section id="dashboard" class="active">
+      <div class="grid4">
+        <div class="stat"><span>수업</span><b id="stClasses">0개</b></div>
+        <div class="stat"><span>학생</span><b id="stStudents">0명</b></div>
+        <div class="stat"><span>오늘 출석</span><b id="stToday">0명</b></div>
+        <div class="stat"><span>미보강</span><b id="stMakeup">0건</b></div>
+      </div>
       <div class="card">
-        <h2>로그인</h2>
-        <p class="small">금쌤국어 계정으로 로그인하면 수업, 학생, 출석 데이터가 Supabase 서버에 저장됩니다.</p>
-        <label>이메일</label>
-        <input id="email" type="email" placeholder="이메일을 입력하세요">
-        <label>비밀번호</label>
-        <input id="password" type="password" placeholder="비밀번호를 입력하세요">
-        <button class="btn primary" onclick="signIn()">로그인</button>
-        <button class="btn sub" onclick="signUp()">회원가입</button>
+        <h2>빠른 시작</h2>
+        <button class="btn primary" onclick="show('classes')">수업 등록</button>
+        <button class="btn primary" onclick="show('students')">학생 등록</button>
+        <button class="btn gold" onclick="show('attendance')">출석 체크</button>
+        <button class="btn blue" onclick="show('lesson')">수업 카톡</button>
+        <button class="btn sub" onclick="show('reports')">리포트</button>
+      </div>
+      <div class="grid2">
+        <div class="card"><h2>최근 출석</h2><div id="recentAttendance"></div></div>
+        <div class="card"><h2>보강 필요</h2><div id="makeupDashboard"></div></div>
+      </div>
+    </section>
+
+    <section id="classes">
+      <div class="grid2">
+        <div class="card">
+          <h2>수업 등록 / 수정</h2>
+          <input type="hidden" id="classEditId">
+          <label>수업 이름</label><input id="className" placeholder="예: 중2 문학반">
+          <label>수업 종류</label><select id="classType"><option>내신</option><option>문학</option><option>문법</option><option>독서</option><option>논술</option><option>수능</option><option>보강</option><option>기타</option></select>
+          <label>카톡방 이름</label><input id="kakaoRoom">
+          <label>메모</label><textarea id="classMemo"></textarea>
+          <h3>요일 / 시간</h3><div id="scheduleRows"></div>
+          <button class="btn sub" onclick="addScheduleRow()">요일/시간 추가</button><br>
+          <button class="btn primary" onclick="saveClass()">수업 저장</button>
+          <button class="btn sub" onclick="resetClassForm()">새 수업</button>
+        </div>
+        <div class="card"><h2>수업 목록</h2><div id="classList"></div></div>
+      </div>
+    </section>
+
+    <section id="students">
+      <div class="grid2">
+        <div class="card">
+          <h2>학생 등록 / 수정</h2>
+          <input type="hidden" id="studentEditId">
+          <label>이름</label><input id="studentName">
+          <label>학년</label><input id="studentGrade" placeholder="예: 중2">
+          <label>학교</label><input id="studentSchool">
+          <label>수업</label><select id="studentClass"></select>
+          <label>학생 연락처</label><input id="studentPhone">
+          <label>보호자 연락처</label><input id="parentPhone">
+          <label>월 수업료</label><input id="tuitionFee" type="number">
+          <label>메모</label><textarea id="studentMemo"></textarea>
+          <button class="btn primary" onclick="saveStudent()">학생 저장</button>
+          <button class="btn sub" onclick="resetStudentForm()">새 학생</button>
+        </div>
+        <div class="card"><h2>학생 목록</h2><div class="scroll"><table><thead><tr><th>이름</th><th>학년</th><th>학교</th><th>수업</th><th>수업료</th><th>관리</th></tr></thead><tbody id="studentTable"></tbody></table></div></div>
+      </div>
+    </section>
+
+    <section id="attendance">
+      <div class="grid2">
+        <div class="card">
+          <h2>출석 체크</h2>
+          <label>날짜</label><input id="attDate" type="date" onchange="renderRoster()">
+          <label>수업</label><select id="attClass" onchange="renderAttendanceSchedule(); renderRoster();"></select>
+          <label>수업 시간</label><select id="attSchedule" onchange="renderRoster()"></select>
+          <label>수업 구분</label><select id="sessionType" onchange="renderRoster()"><option>정규수업</option><option>결석보강</option><option>추가보강</option><option>온라인대체</option><option>숙제검사</option></select>
+          <div class="action-bar">
+            <button class="btn sub" onclick="setAllStatus('출석')">전체 출석</button>
+            <button class="btn sub" onclick="setAllStatus('결석')">전체 결석</button>
+            <button class="btn sub" onclick="setAllStatus('지각')">전체 지각</button>
+            <button class="btn sub" onclick="setAllStatus('보강')">전체 보강</button>
+          </div>
+          <div id="roster" class="roster"></div>
+          <button class="btn primary" onclick="saveAttendance()">출석 저장 / 수정</button>
+        </div>
+        <div class="card"><h2>출석 기록</h2><div class="scroll"><table><thead><tr><th>날짜</th><th>수업</th><th>학생</th><th>상태</th><th>보강</th><th>비고</th></tr></thead><tbody id="attendanceTable"></tbody></table></div></div>
+      </div>
+    </section>
+
+    <section id="lesson">
+      <div class="grid2">
+        <div class="card">
+          <h2>수업 카톡</h2>
+          <label>날짜</label><input id="lessonDate" type="date">
+          <label>수업</label><select id="lessonClass"></select>
+          <label>내용 정리</label><textarea id="lessonSummary"></textarea>
+          <label>과제</label><textarea id="lessonHomework"></textarea>
+          <label>필기 / 자료</label><textarea id="lessonUpload"></textarea>
+          <label>문법 / 암기 / 오답</label><textarea id="lessonGrammar"></textarea>
+          <label>추가 안내</label><textarea id="lessonNotice"></textarea>
+          <button class="btn primary" onclick="makeLessonMessage()">문구 생성</button>
+          <button class="btn gold" onclick="copyText('lessonPreview')">복사</button>
+          <button class="btn blue" onclick="saveLessonMessage()">저장</button>
+        </div>
+        <div class="card"><h2>미리보기</h2><div id="lessonPreview" class="preview">아직 생성된 문구가 없습니다.</div></div>
+      </div>
+      <div class="card"><h2>수업 카톡 기록</h2><div class="scroll"><table><thead><tr><th>날짜</th><th>수업</th><th>내용</th><th>관리</th></tr></thead><tbody id="lessonTable"></tbody></table></div></div>
+    </section>
+
+    <section id="tasks">
+      <div class="grid2">
+        <div class="card">
+          <h2>과제 / 오답</h2>
+          <label>날짜</label><input id="taskDate" type="date">
+          <label>구분</label><select id="taskType"><option>과제</option><option>오답</option><option>문법암기</option><option>독해훈련</option><option>서술형</option></select>
+          <label>수업</label><select id="taskClass" onchange="renderTaskStudents()"></select>
+          <label>학생</label><select id="taskStudent"></select>
+          <label>제목</label><input id="taskTitle">
+          <label>상태</label><select id="taskStatus"><option>미완료</option><option>진행중</option><option>완료</option><option>재확인필요</option></select>
+          <label>메모</label><textarea id="taskMemo"></textarea>
+          <button class="btn primary" onclick="saveTask(false)">개별 저장</button>
+          <button class="btn gold" onclick="saveTask(true)">수업 전체 저장</button>
+        </div>
+        <div class="card"><h2>과제 / 오답 목록</h2><div class="scroll"><table><thead><tr><th>날짜</th><th>구분</th><th>수업</th><th>학생</th><th>제목</th><th>상태</th><th>관리</th></tr></thead><tbody id="taskTable"></tbody></table></div></div>
+      </div>
+    </section>
+
+    <section id="scores">
+      <div class="grid2">
+        <div class="card">
+          <h2>성적 관리</h2>
+          <label>시험일</label><input id="scoreDate" type="date">
+          <label>시험명</label><input id="scoreExam">
+          <label>영역</label><select id="scoreArea"><option>종합</option><option>문학</option><option>독서</option><option>문법</option><option>서술형</option><option>화법과작문</option><option>언어와매체</option></select>
+          <label>수업</label><select id="scoreClass" onchange="renderScoreStudents()"></select>
+          <label>학생</label><select id="scoreStudent"></select>
+          <div class="grid2"><div><label>점수</label><input id="scoreValue" type="number"></div><div><label>만점</label><input id="scoreMax" type="number" value="100"></div></div>
+          <label>평균</label><input id="scoreAverage" type="number">
+          <label>등급/등수</label><input id="scoreRank">
+          <label>약점</label><textarea id="scoreWeakness"></textarea>
+          <label>후속 조치</label><textarea id="scorePlan"></textarea>
+          <button class="btn primary" onclick="saveScore()">성적 저장</button>
+        </div>
+        <div class="card"><h2>성적 목록</h2><div class="scroll"><table><thead><tr><th>날짜</th><th>학생</th><th>수업</th><th>시험명</th><th>영역</th><th>점수</th><th>약점</th><th>관리</th></tr></thead><tbody id="scoreTable"></tbody></table></div></div>
+      </div>
+    </section>
+
+    <section id="counsel">
+      <div class="grid2">
+        <div class="card">
+          <h2>상담 메모</h2>
+          <label>상담일</label><input id="counselDate" type="date">
+          <label>학생</label><select id="counselStudent"></select>
+          <label>유형</label><select id="counselType"><option>학습 상담</option><option>학부모 상담</option><option>시험 결과 상담</option><option>과제/오답 상담</option><option>기타</option></select>
+          <label>상담 내용</label><textarea id="counselContent"></textarea>
+          <label>후속 조치</label><textarea id="counselFollow"></textarea>
+          <button class="btn primary" onclick="saveCounsel()">상담 저장</button>
+        </div>
+        <div class="card"><h2>상담 목록</h2><div class="scroll"><table><thead><tr><th>날짜</th><th>학생</th><th>유형</th><th>내용</th><th>관리</th></tr></thead><tbody id="counselTable"></tbody></table></div></div>
+      </div>
+    </section>
+
+    <section id="reports">
+      <div class="grid2">
+        <div class="card">
+          <h2>학생 리포트</h2>
+          <label>학생</label><select id="reportStudent"></select>
+          <label>조회 월</label><input id="reportMonth" type="month">
+          <button class="btn primary" onclick="makeReport()">리포트 생성</button>
+          <button class="btn gold" onclick="copyText('reportPreview')">복사</button>
+        </div>
+        <div class="card"><h2>리포트 미리보기</h2><div id="reportPreview" class="preview">아직 생성된 리포트가 없습니다.</div></div>
+      </div>
+    </section>
+
+    <section id="admin">
+      <div class="card">
+        <h2>관리</h2>
+        <p class="small">서버 데이터를 다시 불러오거나 로그아웃할 수 있습니다.</p>
+        <button class="btn sub" onclick="loadAll()">서버 데이터 새로고침</button>
         <button class="btn danger" onclick="signOut()">로그아웃</button>
-        <div id="authMsg" class="small"></div>
       </div>
-
-      <div class="card">
-        <h2>사용 순서</h2>
-        <ol class="small">
-          <li>로그인</li>
-          <li>수업 관리에서 수업 등록</li>
-          <li>학생 관리에서 학생을 수업에 연결</li>
-          <li>출석 관리에서 출석 저장</li>
-          <li>데이터는 Supabase 서버에 자동 저장</li>
-        </ol>
-        <p class="small">
-          이제 Supabase URL/key를 입력할 필요가 없습니다. GitHub Pages 주소로 접속해서 로그인만 하면 됩니다.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <section id="classes">
-    <div class="grid2">
-      <div class="card">
-        <h2>수업 등록</h2>
-        <input type="hidden" id="classEditId">
-        <label>수업 이름</label><input id="className" placeholder="예: 중2 문학반">
-        <label>수업 종류</label><select id="classType"><option>내신</option><option>문학</option><option>문법</option><option>독서</option><option>논술</option><option>수능</option><option>보강</option><option>기타</option></select>
-        <label>카톡방 이름</label><input id="kakaoRoom">
-        <label>메모</label><textarea id="classMemo"></textarea>
-        <h3>요일/시간</h3><div id="scheduleRows"></div>
-        <button class="btn sub" onclick="addScheduleRow()">요일/시간 추가</button>
-        <br><button class="btn primary" onclick="saveClass()">수업 저장</button><button class="btn sub" onclick="resetClassForm()">새 수업</button>
-      </div>
-      <div class="card">
-        <h2>수업 목록</h2>
-        <div id="classList"></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="students">
-    <div class="grid2">
-      <div class="card">
-        <h2>학생 등록</h2>
-        <input type="hidden" id="studentEditId">
-        <label>이름</label><input id="studentName">
-        <label>학년</label><input id="studentGrade" placeholder="예: 중2">
-        <label>학교</label><input id="studentSchool">
-        <label>수업</label><select id="studentClass"></select>
-        <label>학생 연락처</label><input id="studentPhone">
-        <label>보호자 연락처</label><input id="parentPhone">
-        <label>월 수업료</label><input id="tuitionFee" type="number">
-        <button class="btn primary" onclick="saveStudent()">학생 저장</button><button class="btn sub" onclick="resetStudentForm()">새 학생</button>
-      </div>
-      <div class="card">
-        <h2>학생 목록</h2>
-        <div class="scroll"><table><thead><tr><th>이름</th><th>학년</th><th>학교</th><th>수업</th><th>수업료</th><th>관리</th></tr></thead><tbody id="studentTable"></tbody></table></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="attendance">
-    <div class="grid2">
-      <div class="card">
-        <h2>출석 체크</h2>
-        <label>날짜</label><input id="attDate" type="date" onchange="renderRoster()">
-        <label>수업</label><select id="attClass" onchange="renderAttendanceSchedule(); renderRoster();"></select>
-        <label>수업 시간</label><select id="attSchedule" onchange="renderRoster()"></select>
-        <label>수업 구분</label><select id="sessionType" onchange="renderRoster()"><option>정규수업</option><option>결석보강</option><option>추가보강</option><option>온라인대체</option><option>숙제검사</option></select>
-        <button class="btn sub" onclick="setAll('출석')">전체 출석</button>
-        <button class="btn sub" onclick="setAll('결석')">전체 결석</button>
-        <button class="btn sub" onclick="setAll('지각')">전체 지각</button>
-        <div id="roster" class="roster"></div>
-        <button class="btn primary" onclick="saveAttendance()">출석 저장</button>
-      </div>
-      <div class="card">
-        <h2>출석 기록</h2>
-        <div class="scroll"><table><thead><tr><th>날짜</th><th>수업</th><th>학생</th><th>상태</th><th>보강</th><th>비고</th></tr></thead><tbody id="attendanceTable"></tbody></table></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="backup">
-    <div class="card">
-      <h2>현재 로드된 데이터</h2>
-      <button class="btn sub" onclick="loadAll()">DB 다시 불러오기</button>
-      <pre id="debugBox">-</pre>
-    </div>
-  </section>
+    </section>
+  </div>
 </div>
 
 <script>
-const SUPABASE_URL = 'https://xvngnokfcuixyysxbqvi.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_MsZjTYFJEAhQsvLUTkDt8Q_NETvCA3r';
+const SUPABASE_URL = "https://xvngnokfcuixyysxbqvi.supabase.co";
+const SUPABASE_KEY = "sb_publishable_MsZjTYFJEAhQsvLUTkDt8Q_NETvCA3r";
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-let sb = null;
-let sessionUser = null;
-let classes = [], schedules = [], students = [], attendance = [];
-let quickStatus = {};
+const NAV = [
+  ["dashboard","대시보드"],["classes","수업 관리"],["students","학생 관리"],["attendance","출석 관리"],
+  ["lesson","수업 카톡"],["tasks","과제/오답"],["scores","성적 관리"],["counsel","상담 메모"],["reports","리포트"],["admin","관리"]
+];
+
+let user=null, classes=[], schedules=[], students=[], attendance=[], tasks=[], scores=[], counsels=[], lessons=[], quickStatus={};
 
 function $(id){return document.getElementById(id)}
-function esc(v){return String(v??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'","&#039;")}
+function esc(v){return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
 function today(){return new Date().toISOString().slice(0,10)}
-function getConfig(){return {url:SUPABASE_URL,key:SUPABASE_KEY}}
-function initClient(){
-  const {url,key}=getConfig();
-  if(!url||!key){setConn(false,'연결 준비');return null}
-  sb = window.supabase.createClient(url,key);
-  setConn(true,'서버 연결 준비');
-  return sb;
+function currentMonth(){return new Date().toISOString().slice(0,7)}
+function money(v){return Number(v||0).toLocaleString("ko-KR")+"원"}
+function className(id){return classes.find(c=>c.id===id)?.name||"-"}
+function studentName(id){return students.find(s=>s.id===id)?.name||"-"}
+function setMsg(t){const el=$("authMsg"); if(el) el.textContent=t}
+function setBadges(){
+  $("serverBadge").className="badge ok"; $("serverBadge").textContent="서버 연결";
+  $("userBadge").className=user?"badge ok":"badge"; $("userBadge").textContent=user?user.email:"로그인 전";
 }
-function setConn(ok,msg){$('connBadge').className='badge '+(ok?'ok':'warn'); $('connBadge').textContent=msg}
-function setUser(user){sessionUser=user; $('userBadge').className='badge '+(user?'ok':''); $('userBadge').textContent=user?user.email:'로그인 전'}
-function show(id){document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));event?.target?.classList?.add('active'); if(id!=='setup') loadAll();}
-function msg(t){$('authMsg').textContent=t}
-
-function saveConfig(){initClient(); msg('운영용 연결 설정이 적용되어 있습니다.');}
-async function testConnection(){
-  if(!initClient()) return;
-  const {data,error}=await sb.from('classes').select('id').limit(1);
-  if(error){setConn(false,'DB 오류'); msg('연결 실패: '+error.message);}
-  else{setConn(true,'DB 연결 성공'); msg('연결 성공');}
-}
-async function signUp(){
-  if(!initClient()) return;
-  const {data,error}=await sb.auth.signUp({email:$('email').value,password:$('password').value});
-  if(error) return msg('회원가입 실패: '+error.message);
-  msg('회원가입 완료. Supabase 설정에 따라 이메일 확인이 필요할 수 있습니다.');
-  setUser(data.user);
-}
-async function signIn(){
-  if(!initClient()) return;
-  const {data,error}=await sb.auth.signInWithPassword({email:$('email').value,password:$('password').value});
-  if(error) return msg('로그인 실패: '+error.message);
-  setUser(data.user); msg('로그인 완료'); await loadAll();
-}
-async function signOut(){ if(sb) await sb.auth.signOut(); setUser(null); msg('로그아웃 완료'); }
-
-async function loadAll(){
-  if(!sb) initClient(); if(!sb) return;
-  const {data:{user}} = await sb.auth.getUser(); setUser(user); if(!user) return;
-  const [c,sc,st,a]=await Promise.all([
-    sb.from('classes').select('*').order('created_at'),
-    sb.from('class_schedules').select('*').order('day_of_week'),
-    sb.from('students').select('*, classes(name)').order('name'),
-    sb.from('attendance').select('*, students(name), classes(name)').order('class_date',{ascending:false}).limit(100)
-  ]);
-  if(c.error) return alert(c.error.message);
-  classes=c.data||[]; schedules=sc.data||[]; students=st.data||[]; attendance=a.data||[];
+function showLoginOnly(){$("loginOnly").classList.remove("hidden"); $("mainApp").classList.add("hidden")}
+function showMain(){$("loginOnly").classList.add("hidden"); $("mainApp").classList.remove("hidden")}
+function buildNav(){$("nav").innerHTML=NAV.map(([id,label])=>`<button onclick="show('${id}')" id="nav_${id}">${label}</button>`).join("")}
+function show(id){
+  document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
+  $(id).classList.add("active");
+  document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+  $("nav_"+id)?.classList.add("active");
   renderAll();
 }
-function renderAll(){renderClassList();renderClassSelects();renderStudents();renderAttendanceSchedule();renderRoster();renderAttendanceTable();$('debugBox').textContent=JSON.stringify({classes,schedules,students,attendance},null,2)}
-
-function addScheduleRow(day='',start='',end=''){
-  const div=document.createElement('div'); div.className='schedule-row';
-  div.innerHTML=`<div><label>요일</label><select class="schDay">${['월','화','수','목','금','토','일'].map(d=>`<option ${d===day?'selected':''}>${d}</option>`).join('')}</select></div><div><label>시작</label><input class="schStart" type="time" value="${esc(start)}"></div><div><label>종료</label><input class="schEnd" type="time" value="${esc(end)}"></div><button class="x" onclick="this.parentElement.remove()">×</button>`;
-  $('scheduleRows').appendChild(div);
+async function signUp(){
+  const email=$("loginEmail").value.trim(), password=$("loginPassword").value;
+  if(!email||!password) return setMsg("이메일과 비밀번호를 입력하세요.");
+  const {error}=await sb.auth.signUp({email,password});
+  if(error) return setMsg("회원가입 실패: "+error.message);
+  setMsg("회원가입 완료. 이메일 인증이 켜져 있으면 메일 확인 후 로그인하세요.");
 }
-function getScheduleInputs(){return [...document.querySelectorAll('#scheduleRows .schedule-row')].map(r=>({day_of_week:r.querySelector('.schDay').value,start_time:r.querySelector('.schStart').value||null,end_time:r.querySelector('.schEnd').value||null}))}
-function resetClassForm(){$('classEditId').value='';$('className').value='';$('classType').value='내신';$('kakaoRoom').value='';$('classMemo').value='';$('scheduleRows').innerHTML='';addScheduleRow();}
+async function signIn(){
+  const email=$("loginEmail").value.trim(), password=$("loginPassword").value;
+  if(!email||!password) return setMsg("이메일과 비밀번호를 입력하세요.");
+  const {data,error}=await sb.auth.signInWithPassword({email,password});
+  if(error) return setMsg("로그인 실패: "+error.message);
+  user=data.user; setMsg("로그인 완료"); setBadges(); showMain(); await loadAll(); show("dashboard");
+}
+async function signOut(){await sb.auth.signOut(); user=null; setBadges(); showLoginOnly()}
+async function requireUser(){const {data}=await sb.auth.getUser(); user=data.user; setBadges(); if(user) showMain(); else showLoginOnly(); return user}
+
+async function loadAll(){
+  if(!user) return;
+  const [c,sc,st,a,t,so,co,lm]=await Promise.all([
+    sb.from("classes").select("*").order("created_at"),
+    sb.from("class_schedules").select("*").order("created_at"),
+    sb.from("students").select("*, classes(name)").order("name"),
+    sb.from("attendance").select("*, students(name), classes(name)").order("class_date",{ascending:false}).limit(300),
+    sb.from("tasks").select("*, students(name), classes(name)").order("task_date",{ascending:false}).limit(300),
+    sb.from("scores").select("*, students(name), classes(name)").order("exam_date",{ascending:false}).limit(300),
+    sb.from("counsel_notes").select("*, students(name)").order("counsel_date",{ascending:false}).limit(300),
+    sb.from("lesson_messages").select("*, classes(name)").order("lesson_date",{ascending:false}).limit(300)
+  ]);
+  const err=[c,sc,st,a,t,so,co,lm].find(x=>x.error);
+  if(err) return alert("서버 데이터 불러오기 오류: "+err.error.message);
+  classes=c.data||[]; schedules=sc.data||[]; students=st.data||[]; attendance=a.data||[];
+  tasks=t.data||[]; scores=so.data||[]; counsels=co.data||[]; lessons=lm.data||[];
+  renderAll();
+}
+
+function classOptions(withBlank=true){return (withBlank?'<option value="">선택</option>':'')+classes.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join("")}
+function studentOptions(withBlank=true){return (withBlank?'<option value="">학생 선택</option>':'')+students.map(s=>`<option value="${s.id}">${esc(s.name)} (${esc(s.grade||"")} · ${esc(s.classes?.name||className(s.class_id))})</option>`).join("")}
+function fillSelect(id, html){const el=$(id); if(!el) return; const old=el.value; el.innerHTML=html; if([...el.options].some(o=>o.value===old)) el.value=old}
+function renderSelects(){
+  ["studentClass","attClass","lessonClass","taskClass","scoreClass"].forEach(id=>fillSelect(id,classOptions()));
+  ["counselStudent","reportStudent"].forEach(id=>fillSelect(id,studentOptions()));
+  renderTaskStudents(); renderScoreStudents();
+}
+
+function addScheduleRow(day="월",start="",end=""){
+  const box=$("scheduleRows"); if(!box) return;
+  const div=document.createElement("div"); div.className="schedule-row";
+  div.innerHTML=`<div><label>요일</label><select class="schDay">${["월","화","수","목","금","토","일"].map(d=>`<option ${d===day?"selected":""}>${d}</option>`).join("")}</select></div><div><label>시작</label><input class="schStart" type="time" value="${esc(start)}"></div><div><label>종료</label><input class="schEnd" type="time" value="${esc(end)}"></div><button class="x" onclick="this.parentElement.remove()">×</button>`;
+  box.appendChild(div);
+}
+function getScheduleInputs(){return [...document.querySelectorAll("#scheduleRows .schedule-row")].map(r=>({day_of_week:r.querySelector(".schDay").value,start_time:r.querySelector(".schStart").value||null,end_time:r.querySelector(".schEnd").value||null}))}
+function resetClassForm(){["classEditId","className","kakaoRoom","classMemo"].forEach(id=>$(id).value=""); $("classType").value="내신"; $("scheduleRows").innerHTML=""; addScheduleRow()}
 async function saveClass(){
-  const name=$('className').value.trim(); if(!name) return alert('수업 이름을 입력하세요.');
-  const id=$('classEditId').value;
-  const payload={name,type:$('classType').value,kakao_room_name:$('kakaoRoom').value.trim(),memo:$('classMemo').value.trim()};
+  const name=$("className").value.trim(); if(!name) return alert("수업 이름을 입력하세요.");
+  const id=$("classEditId").value;
+  const payload={name,type:$("classType").value,kakao_room_name:$("kakaoRoom").value.trim(),memo:$("classMemo").value.trim()};
   let classId=id;
-  if(id){
-    const {error}=await sb.from('classes').update(payload).eq('id',id); if(error) return alert(error.message);
-    await sb.from('class_schedules').delete().eq('class_id',id);
-  }else{
-    const {data,error}=await sb.from('classes').insert(payload).select().single(); if(error) return alert(error.message); classId=data.id;
-  }
-  const rows=getScheduleInputs().map(r=>({...r,class_id:classId}));
-  if(rows.length){const {error}=await sb.from('class_schedules').insert(rows); if(error) return alert(error.message);}
-  resetClassForm(); await loadAll(); alert('수업 저장 완료');
+  if(id){const {error}=await sb.from("classes").update(payload).eq("id",id); if(error) return alert(error.message); await sb.from("class_schedules").delete().eq("class_id",id)}
+  else {const {data,error}=await sb.from("classes").insert(payload).select().single(); if(error) return alert(error.message); classId=data.id}
+  const rows=getScheduleInputs().filter(r=>r.day_of_week).map(r=>({...r,class_id:classId}));
+  if(rows.length){const {error}=await sb.from("class_schedules").insert(rows); if(error) return alert(error.message)}
+  resetClassForm(); await loadAll(); alert("수업이 저장되었습니다.");
 }
-function editClass(id){
-  const c=classes.find(x=>x.id===id); if(!c)return;
-  $('classEditId').value=c.id;$('className').value=c.name;$('classType').value=c.type||'기타';$('kakaoRoom').value=c.kakao_room_name||'';$('classMemo').value=c.memo||'';$('scheduleRows').innerHTML='';
-  schedules.filter(s=>s.class_id===id).forEach(s=>addScheduleRow(s.day_of_week,s.start_time?.slice(0,5),s.end_time?.slice(0,5)));
-  if(!schedules.filter(s=>s.class_id===id).length) addScheduleRow();
-}
-async function deleteClass(id){if(!confirm('수업을 삭제할까요?'))return; const {error}=await sb.from('classes').delete().eq('id',id); if(error)alert(error.message); await loadAll();}
-function renderClassList(){
-  $('classList').innerHTML=classes.length?classes.map(c=>{
-    const sch=schedules.filter(s=>s.class_id===c.id).map(s=>`${s.day_of_week} ${s.start_time?.slice(0,5)||''}${s.end_time?'~'+s.end_time.slice(0,5):''}`).join('<br>')||'-';
-    return `<div class="card"><b>${esc(c.name)}</b> <span class="badge">${esc(c.type||'기타')}</span><div class="small">${sch}<br>${esc(c.memo||'')}</div><button class="btn sub" onclick="editClass('${c.id}')">수정</button><button class="btn danger" onclick="deleteClass('${c.id}')">삭제</button></div>`;
-  }).join(''):'<p class="small">수업이 없습니다.</p>';
-}
-function renderClassSelects(){
-  const html='<option value="">선택</option>'+classes.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('');
-  ['studentClass','attClass'].forEach(id=>{const v=$(id).value;$(id).innerHTML=html;if([...$(id).options].some(o=>o.value===v))$(id).value=v});
-}
+function editClass(id){const c=classes.find(x=>x.id===id); if(!c) return; $("classEditId").value=c.id; $("className").value=c.name; $("classType").value=c.type||"기타"; $("kakaoRoom").value=c.kakao_room_name||""; $("classMemo").value=c.memo||""; $("scheduleRows").innerHTML=""; const rows=schedules.filter(s=>s.class_id===id); rows.forEach(s=>addScheduleRow(s.day_of_week,s.start_time?.slice(0,5),s.end_time?.slice(0,5))); if(!rows.length) addScheduleRow(); show("classes")}
+async function deleteClass(id){if(!confirm("수업을 삭제하시겠습니까?")) return; const {error}=await sb.from("classes").delete().eq("id",id); if(error) return alert(error.message); await loadAll()}
+function renderClasses(){const box=$("classList"); if(!box) return; if(!classes.length){box.innerHTML='<div class="empty">등록된 수업이 없습니다.</div>'; return} box.innerHTML=classes.map(c=>{const sch=schedules.filter(s=>s.class_id===c.id).map(s=>`${s.day_of_week} ${s.start_time?.slice(0,5)||""}${s.end_time?" ~ "+s.end_time.slice(0,5):""}`).join("<br>")||"-"; return `<div class="room-card"><span class="badge">${esc(c.type||"기타")}</span><div class="room-title">${esc(c.name)}</div><div class="small">일정:<br>${sch}<br>카톡방: ${esc(c.kakao_room_name||"-")}<br>연결 학생: ${students.filter(s=>s.class_id===c.id).length}명<br>메모: ${esc(c.memo||"-")}</div><button class="btn sub" onclick="editClass('${c.id}')">수정</button><button class="btn danger" onclick="deleteClass('${c.id}')">삭제</button></div>`}).join("")}
 
-function resetStudentForm(){['studentEditId','studentName','studentGrade','studentSchool','studentPhone','parentPhone','tuitionFee'].forEach(id=>$(id).value='');$('studentClass').value=''}
+function resetStudentForm(){["studentEditId","studentName","studentGrade","studentSchool","studentPhone","parentPhone","tuitionFee","studentMemo"].forEach(id=>$(id).value=""); $("studentClass").value=""}
 async function saveStudent(){
-  const name=$('studentName').value.trim(), class_id=$('studentClass').value; if(!name||!class_id)return alert('이름과 수업을 입력하세요.');
-  const payload={name,grade:$('studentGrade').value.trim(),school:$('studentSchool').value.trim(),class_id,student_phone:$('studentPhone').value.trim(),parent_phone:$('parentPhone').value.trim(),tuition_fee:Number($('tuitionFee').value||0)};
-  const id=$('studentEditId').value;
-  const res=id?await sb.from('students').update(payload).eq('id',id):await sb.from('students').insert(payload);
-  if(res.error)return alert(res.error.message); resetStudentForm(); await loadAll(); alert('학생 저장 완료');
+  const name=$("studentName").value.trim(), class_id=$("studentClass").value; if(!name||!class_id) return alert("이름과 수업을 입력하세요.");
+  const payload={name,grade:$("studentGrade").value.trim(),school:$("studentSchool").value.trim(),class_id,student_phone:$("studentPhone").value.trim(),parent_phone:$("parentPhone").value.trim(),tuition_fee:Number($("tuitionFee").value||0),memo:$("studentMemo").value.trim()};
+  const id=$("studentEditId").value;
+  const res=id?await sb.from("students").update(payload).eq("id",id):await sb.from("students").insert(payload);
+  if(res.error) return alert(res.error.message);
+  resetStudentForm(); await loadAll(); alert("학생이 저장되었습니다.");
 }
-function editStudent(id){const s=students.find(x=>x.id===id); if(!s)return; $('studentEditId').value=s.id;$('studentName').value=s.name;$('studentGrade').value=s.grade||'';$('studentSchool').value=s.school||'';$('studentClass').value=s.class_id||'';$('studentPhone').value=s.student_phone||'';$('parentPhone').value=s.parent_phone||'';$('tuitionFee').value=s.tuition_fee||0}
-async function deleteStudent(id){if(!confirm('학생을 삭제할까요?'))return; const {error}=await sb.from('students').delete().eq('id',id); if(error)alert(error.message); await loadAll();}
-function renderStudents(){
-  $('studentTable').innerHTML=students.length?students.map(s=>`<tr><td><b>${esc(s.name)}</b></td><td>${esc(s.grade||'-')}</td><td>${esc(s.school||'-')}</td><td>${esc(s.classes?.name||'-')}</td><td>${Number(s.tuition_fee||0).toLocaleString()}원</td><td><button class="btn sub" onclick="editStudent('${s.id}')">수정</button><button class="btn danger" onclick="deleteStudent('${s.id}')">삭제</button></td></tr>`).join(''):'<tr><td colspan="6">학생이 없습니다.</td></tr>';
-}
+function editStudent(id){const s=students.find(x=>x.id===id); if(!s) return; $("studentEditId").value=s.id; $("studentName").value=s.name; $("studentGrade").value=s.grade||""; $("studentSchool").value=s.school||""; $("studentClass").value=s.class_id||""; $("studentPhone").value=s.student_phone||""; $("parentPhone").value=s.parent_phone||""; $("tuitionFee").value=s.tuition_fee||0; $("studentMemo").value=s.memo||""; show("students")}
+async function deleteStudent(id){if(!confirm("학생을 삭제하시겠습니까?")) return; const {error}=await sb.from("students").delete().eq("id",id); if(error) return alert(error.message); await loadAll()}
+function renderStudents(){const tb=$("studentTable"); if(!tb) return; tb.innerHTML=students.length?students.map(s=>`<tr><td><b>${esc(s.name)}</b></td><td>${esc(s.grade||"-")}</td><td>${esc(s.school||"-")}</td><td>${esc(s.classes?.name||className(s.class_id))}</td><td>${money(s.tuition_fee)}</td><td><button class="btn sub" onclick="editStudent('${s.id}')">수정</button><button class="btn danger" onclick="deleteStudent('${s.id}')">삭제</button></td></tr>`).join(""):'<tr><td colspan="6">등록된 학생이 없습니다.</td></tr>'}
 
-function renderAttendanceSchedule(){
-  const cid=$('attClass').value, v=$('attSchedule').value;
-  const rows=schedules.filter(s=>s.class_id===cid);
-  $('attSchedule').innerHTML=rows.length?rows.map(s=>{const label=`${s.day_of_week} ${s.start_time?.slice(0,5)||''}${s.end_time?'~'+s.end_time.slice(0,5):''}`;return `<option value="${esc(label)}">${esc(label)}</option>`}).join(''):'<option value="시간 미정">시간 미정</option>';
-  if([...$('attSchedule').options].some(o=>o.value===v))$('attSchedule').value=v;
-}
-function renderRoster(){
-  const cid=$('attClass').value, date=$('attDate').value, schedule=$('attSchedule').value, type=$('sessionType').value;
-  const list=students.filter(s=>s.class_id===cid); quickStatus={};
-  if(!cid){$('roster').innerHTML='<p class="small">수업을 선택하세요.</p>';return}
-  if(!list.length){$('roster').innerHTML='<p class="small">해당 수업에 학생이 없습니다.</p>';return}
-  $('roster').innerHTML=list.map(s=>{
-    const old=attendance.find(a=>a.student_id===s.id&&a.class_id===cid&&a.class_date===date&&a.schedule_label===schedule&&a.session_type===type);
-    const status=old?.status||'출석'; quickStatus[s.id]=status;
-    return `<div class="roster-row" data-id="${s.id}"><div><b>${esc(s.name)}</b><br><span class="small">${esc(s.grade||'')}</span></div><div>${['출석','지각','결석','보강','온라인'].map(x=>`<button class="status ${x===status?'active':''}" onclick="setStatus('${s.id}','${x}',this)">${x}</button>`).join('')}</div><div><label><input type="checkbox" class="needs" ${old?.needs_makeup||status==='결석'?'checked':''}> 보강필요</label><br><label><input type="checkbox" class="done" ${old?.makeup_completed||status==='보강'?'checked':''}> 보강완료</label><input class="memo" placeholder="비고" value="${esc(old?.memo||'')}"></div></div>`;
-  }).join('');
-}
-function setStatus(id,status,btn){quickStatus[id]=status;const row=btn.closest('.roster-row');row.querySelectorAll('.status').forEach(b=>b.classList.remove('active'));btn.classList.add('active');row.querySelector('.needs').checked=status==='결석';row.querySelector('.done').checked=status==='보강'}
-function setAll(status){document.querySelectorAll('.roster-row').forEach(r=>{const b=[...r.querySelectorAll('.status')].find(x=>x.textContent===status);if(b)setStatus(r.dataset.id,status,b)})}
-async function saveAttendance(){
-  const class_id=$('attClass').value, class_date=$('attDate').value, schedule_label=$('attSchedule').value, session_type=$('sessionType').value;
-  if(!class_id||!class_date)return alert('수업과 날짜를 선택하세요.');
-  for(const row of document.querySelectorAll('.roster-row')){
-    const student_id=row.dataset.id, status=quickStatus[student_id]||'출석';
-    const payload={class_id,student_id,class_date,schedule_label,session_type,status,needs_makeup:row.querySelector('.needs').checked,makeup_completed:row.querySelector('.done').checked,memo:row.querySelector('.memo').value.trim()};
-    const old=attendance.find(a=>a.student_id===student_id&&a.class_id===class_id&&a.class_date===class_date&&a.schedule_label===schedule_label&&a.session_type===session_type);
-    const res=old?await sb.from('attendance').update(payload).eq('id',old.id):await sb.from('attendance').insert(payload);
-    if(res.error){alert(res.error.message);return}
-  }
-  await loadAll(); alert('출석 저장 완료');
-}
-function renderAttendanceTable(){
-  $('attendanceTable').innerHTML=attendance.length?attendance.map(a=>`<tr><td>${a.class_date}</td><td>${esc(a.classes?.name||'-')}</td><td>${esc(a.students?.name||'-')}</td><td>${esc(a.status)}</td><td>${a.needs_makeup?'필요':''} ${a.makeup_completed?'완료':''}</td><td>${esc(a.memo||'-')}</td></tr>`).join(''):'<tr><td colspan="6">출석 기록 없음</td></tr>';
-}
+function renderAttendanceSchedule(){const cid=$("attClass")?.value, el=$("attSchedule"); if(!el) return; const old=el.value; const rows=schedules.filter(s=>s.class_id===cid); el.innerHTML=rows.length?rows.map(s=>{const label=`${s.day_of_week} ${s.start_time?.slice(0,5)||""}${s.end_time?"~"+s.end_time.slice(0,5):""}`; return `<option value="${esc(label)}">${esc(label)}</option>`}).join(""):'<option value="시간 미정">시간 미정</option>'; if([...el.options].some(o=>o.value===old)) el.value=old}
+function renderRoster(){const box=$("roster"); if(!box) return; const cid=$("attClass").value, date=$("attDate").value, schedule_label=$("attSchedule").value, session_type=$("sessionType").value; quickStatus={}; if(!cid){box.innerHTML='<div class="empty">수업을 선택하세요.</div>';return} const list=students.filter(s=>s.class_id===cid); if(!list.length){box.innerHTML='<div class="empty">해당 수업에 등록된 학생이 없습니다.</div>';return} box.innerHTML=list.map(s=>{const old=attendance.find(a=>a.student_id===s.id&&a.class_id===cid&&a.class_date===date&&a.schedule_label===schedule_label&&a.session_type===session_type); const status=old?.status||"출석"; quickStatus[s.id]=status; return `<div class="roster-row" data-id="${s.id}"><div><b>${esc(s.name)}</b><br><span class="small">${esc(s.grade||"")} · ${esc(s.school||"-")}</span></div><div>${["출석","지각","결석","보강","온라인"].map(x=>`<button class="status ${x===status?"active":""}" onclick="setStatus('${s.id}','${x}',this)">${x}</button>`).join("")}</div><div><label><input type="checkbox" class="needs" ${old?.needs_makeup||status==="결석"?"checked":""}> 보강필요</label><br><label><input type="checkbox" class="done" ${old?.makeup_completed||status==="보강"?"checked":""}> 보강완료</label><input class="memo" placeholder="비고" value="${esc(old?.memo||"")}"></div></div>`}).join("")}
+function setStatus(id,status,btn){quickStatus[id]=status; const row=btn.closest(".roster-row"); row.querySelectorAll(".status").forEach(b=>b.classList.remove("active")); btn.classList.add("active"); row.querySelector(".needs").checked=status==="결석"; row.querySelector(".done").checked=status==="보강"}
+function setAllStatus(status){document.querySelectorAll("#roster .roster-row").forEach(row=>{const btn=[...row.querySelectorAll(".status")].find(b=>b.textContent===status); if(btn) setStatus(row.dataset.id,status,btn)})}
+async function saveAttendance(){const class_id=$("attClass").value, class_date=$("attDate").value, schedule_label=$("attSchedule").value, session_type=$("sessionType").value; if(!class_id||!class_date) return alert("수업과 날짜를 선택하세요."); for(const row of document.querySelectorAll("#roster .roster-row")){const student_id=row.dataset.id, status=quickStatus[student_id]||"출석"; const payload={class_id,student_id,class_date,schedule_label,session_type,status,needs_makeup:row.querySelector(".needs").checked,makeup_completed:row.querySelector(".done").checked,memo:row.querySelector(".memo").value.trim()}; const old=attendance.find(a=>a.student_id===student_id&&a.class_id===class_id&&a.class_date===class_date&&a.schedule_label===schedule_label&&a.session_type===session_type); const res=old?await sb.from("attendance").update(payload).eq("id",old.id):await sb.from("attendance").insert(payload); if(res.error) return alert(res.error.message)} await loadAll(); alert("출석이 저장되었습니다.")}
+function renderAttendance(){const tb=$("attendanceTable"); if(!tb) return; tb.innerHTML=attendance.length?attendance.slice(0,80).map(a=>`<tr><td>${a.class_date}</td><td>${esc(a.classes?.name||className(a.class_id))}</td><td><b>${esc(a.students?.name||studentName(a.student_id))}</b></td><td>${esc(a.status)}</td><td>${a.needs_makeup?"필요":""} ${a.makeup_completed?"완료":""}</td><td>${esc(a.memo||"-")}</td></tr>`).join(""):'<tr><td colspan="6">출석 기록이 없습니다.</td></tr>'}
 
-document.addEventListener('DOMContentLoaded',async()=>{
-  $('attDate').value=today();
-  if($('supabaseUrl')) $('supabaseUrl').value=getConfig().url;
-  if($('supabaseKey')) $('supabaseKey').value=getConfig().key;
-  addScheduleRow();
-  initClient();
-  if(sb){const {data:{user}}=await sb.auth.getUser();setUser(user); if(user) await loadAll();}
-});
+function makeLessonMessage(){const cid=$("lessonClass").value, c=classes.find(x=>x.id===cid); const msg=`[금쌤국어] ${$("lessonDate").value.slice(5).replace("-","/")} ${c?.name||""} 수업 안내\n\n오늘 수업한 내용과 과제입니다.\n\n1. 내용 정리\n${$("lessonSummary").value}\n\n2. 과제\n${$("lessonHomework").value}\n\n3. 필기 / 자료\n${$("lessonUpload").value}\n\n4. 문법 / 암기 / 오답\n${$("lessonGrammar").value}\n\n${$("lessonNotice").value}\n\n수업 전까지 확인해 주세요.`; $("lessonPreview").textContent=msg; return msg}
+async function copyText(id){const text=$(id).textContent; try{await navigator.clipboard.writeText(text); alert("복사되었습니다.")}catch(e){alert("복사 권한이 없습니다. 내용을 직접 선택해서 복사하세요.")}}
+async function saveLessonMessage(){const class_id=$("lessonClass").value; if(!class_id) return alert("수업을 선택하세요."); const message_text=makeLessonMessage(); const payload={class_id,lesson_date:$("lessonDate").value,summary:$("lessonSummary").value,homework:$("lessonHomework").value,upload_note:$("lessonUpload").value,grammar_note:$("lessonGrammar").value,notice:$("lessonNotice").value,message_text}; const {error}=await sb.from("lesson_messages").insert(payload); if(error) return alert(error.message); await loadAll(); alert("수업 카톡 기록이 저장되었습니다.")}
+function showLesson(id){const l=lessons.find(x=>x.id===id); if(l){$("lessonPreview").textContent=l.message_text||""; show("lesson")}}
+function renderLessons(){const tb=$("lessonTable"); if(!tb) return; tb.innerHTML=lessons.length?lessons.map(l=>`<tr><td>${l.lesson_date}</td><td>${esc(l.classes?.name||className(l.class_id))}</td><td style="text-align:left">${esc(l.summary||"-")}</td><td><button class="btn sub" onclick="showLesson('${l.id}')">보기</button></td></tr>`).join(""):'<tr><td colspan="4">기록이 없습니다.</td></tr>'}
+
+function renderTaskStudents(){const cid=$("taskClass")?.value, el=$("taskStudent"); if(!el) return; const old=el.value; const list=cid?students.filter(s=>s.class_id===cid):students; el.innerHTML='<option value="">학생 선택</option>'+list.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join(""); if([...el.options].some(o=>o.value===old)) el.value=old}
+async function saveTask(all){const class_id=$("taskClass").value, title=$("taskTitle").value.trim(); if(!class_id||!title) return alert("수업과 제목을 입력하세요."); const list=all?students.filter(s=>s.class_id===class_id):[students.find(s=>s.id===$("taskStudent").value)].filter(Boolean); if(!list.length) return alert("저장할 학생이 없습니다."); const rows=list.map(s=>({class_id,student_id:s.id,task_date:$("taskDate").value,type:$("taskType").value,title,status:$("taskStatus").value,memo:$("taskMemo").value.trim()})); const {error}=await sb.from("tasks").insert(rows); if(error) return alert(error.message); await loadAll(); alert("과제/오답이 저장되었습니다.")}
+async function updateTaskStatus(id,status){const {error}=await sb.from("tasks").update({status}).eq("id",id); if(error) return alert(error.message); await loadAll()}
+function renderTasks(){const tb=$("taskTable"); if(!tb) return; tb.innerHTML=tasks.length?tasks.map(t=>`<tr><td>${t.task_date}</td><td>${esc(t.type)}</td><td>${esc(t.classes?.name||className(t.class_id))}</td><td>${esc(t.students?.name||studentName(t.student_id))}</td><td style="text-align:left">${esc(t.title)}</td><td><select onchange="updateTaskStatus('${t.id}',this.value)">${["미완료","진행중","완료","재확인필요"].map(s=>`<option ${t.status===s?"selected":""}>${s}</option>`).join("")}</select></td><td>-</td></tr>`).join(""):'<tr><td colspan="7">기록이 없습니다.</td></tr>'}
+
+function renderScoreStudents(){const cid=$("scoreClass")?.value, el=$("scoreStudent"); if(!el) return; const old=el.value; const list=cid?students.filter(s=>s.class_id===cid):students; el.innerHTML='<option value="">학생 선택</option>'+list.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join(""); if([...el.options].some(o=>o.value===old)) el.value=old}
+async function saveScore(){const class_id=$("scoreClass").value, student_id=$("scoreStudent").value, exam_name=$("scoreExam").value.trim(); if(!class_id||!student_id||!exam_name) return alert("수업, 학생, 시험명을 입력하세요."); const payload={class_id,student_id,exam_date:$("scoreDate").value,exam_name,area:$("scoreArea").value,score:Number($("scoreValue").value||0),max_score:Number($("scoreMax").value||100),average_score:$("scoreAverage").value?Number($("scoreAverage").value):null,grade_rank:$("scoreRank").value.trim(),weakness:$("scoreWeakness").value.trim(),action_plan:$("scorePlan").value.trim()}; const {error}=await sb.from("scores").insert(payload); if(error) return alert(error.message); await loadAll(); alert("성적이 저장되었습니다.")}
+function renderScores(){const tb=$("scoreTable"); if(!tb) return; tb.innerHTML=scores.length?scores.map(s=>`<tr><td>${s.exam_date}</td><td>${esc(s.students?.name||studentName(s.student_id))}</td><td>${esc(s.classes?.name||className(s.class_id))}</td><td>${esc(s.exam_name)}</td><td>${esc(s.area)}</td><td>${s.score}/${s.max_score}</td><td style="text-align:left">${esc(s.weakness||"-")}</td><td>-</td></tr>`).join(""):'<tr><td colspan="8">기록이 없습니다.</td></tr>'}
+
+async function saveCounsel(){const student_id=$("counselStudent").value, content=$("counselContent").value.trim(); if(!student_id||!content) return alert("학생과 상담 내용을 입력하세요."); const payload={student_id,counsel_date:$("counselDate").value,type:$("counselType").value,content,follow_up:$("counselFollow").value.trim()}; const {error}=await sb.from("counsel_notes").insert(payload); if(error) return alert(error.message); await loadAll(); alert("상담 메모가 저장되었습니다.")}
+function renderCounsels(){const tb=$("counselTable"); if(!tb) return; tb.innerHTML=counsels.length?counsels.map(c=>`<tr><td>${c.counsel_date}</td><td>${esc(c.students?.name||studentName(c.student_id))}</td><td>${esc(c.type)}</td><td style="text-align:left">${esc(c.content)}</td><td>-</td></tr>`).join(""):'<tr><td colspan="5">기록이 없습니다.</td></tr>'}
+
+function makeReport(){const sid=$("reportStudent").value, month=$("reportMonth").value, s=students.find(x=>x.id===sid); if(!s) return alert("학생을 선택하세요."); const at=attendance.filter(x=>x.student_id===sid&&x.class_date?.startsWith(month)); const tk=tasks.filter(x=>x.student_id===sid&&x.task_date?.startsWith(month)); const sc=scores.filter(x=>x.student_id===sid&&x.exam_date?.startsWith(month)); const co=counsels.filter(x=>x.student_id===sid&&x.counsel_date?.startsWith(month)); const report=`[금쌤국어 ${month} 학습 리포트]\n\n학생: ${s.name}\n수업: ${s.classes?.name||className(s.class_id)}\n\n1. 출석\n출석 기록 ${at.length}건 / 결석 ${at.filter(x=>x.status==="결석").length}건\n\n2. 과제/오답\n${tk.length?tk.map(x=>`- ${x.task_date} ${x.title} (${x.status})`).join("\n"):"기록 없음"}\n\n3. 성적\n${sc.length?sc.map(x=>`- ${x.exam_date} ${x.exam_name}: ${x.score}/${x.max_score}`).join("\n"):"기록 없음"}\n\n4. 상담\n${co.length?co.map(x=>`- ${x.counsel_date} ${x.type}: ${x.content}`).join("\n"):"기록 없음"}\n\n다음 수업에서 과제 수행과 오답 정리를 계속 확인하겠습니다.`; $("reportPreview").textContent=report}
+
+function renderDashboard(){if(!$("stClasses")) return; $("stClasses").textContent=classes.length+"개"; $("stStudents").textContent=students.length+"명"; $("stToday").textContent=attendance.filter(a=>a.class_date===today()&&a.status==="출석").length+"명"; const makeup=attendance.filter(a=>a.needs_makeup&&!a.makeup_completed); $("stMakeup").textContent=makeup.length+"건"; $("recentAttendance").innerHTML=attendance.slice(0,6).map(a=>`<div class="room-card">${a.class_date} · ${esc(a.students?.name||studentName(a.student_id))} · ${esc(a.status)}</div>`).join("")||'<div class="empty">최근 출석 기록이 없습니다.</div>'; $("makeupDashboard").innerHTML=makeup.slice(0,6).map(a=>`<div class="room-card"><b>${esc(a.students?.name||studentName(a.student_id))}</b><br>${a.class_date} · ${esc(a.classes?.name||className(a.class_id))}</div>`).join("")||'<div class="empty">보강 필요 학생이 없습니다.</div>'}
+function renderAll(){renderSelects(); renderClasses(); renderStudents(); renderAttendanceSchedule(); renderRoster(); renderAttendance(); renderLessons(); renderTasks(); renderScores(); renderCounsels(); renderDashboard()}
+
+document.addEventListener("DOMContentLoaded", async()=>{buildNav(); document.querySelectorAll('input[type="date"]').forEach(el=>el.value=today()); document.querySelectorAll('input[type="month"]').forEach(el=>el.value=currentMonth()); addScheduleRow(); $("serverBadge").className="badge ok"; $("serverBadge").textContent="서버 연결 준비"; await requireUser(); if(user){await loadAll(); show("dashboard")}})
 </script>
 </body>
 </html>
