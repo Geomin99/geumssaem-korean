@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>금쌤국어_014 GitHub Pages 배포용</title>
+<title>금쌤국어_015 운영용</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{--ivory:#FAF7F0;--paper:#FFFDF8;--brown:#6B4F3F;--dark:#3A2E2A;--gold:#C89B3C;--line:#E2D6C6;--muted:#7A6F65;--danger:#B94A3A;--blue:#4E86B8}
@@ -26,12 +26,12 @@ pre{white-space:pre-wrap;background:#2a211f;color:#fff;border-radius:14px;paddin
 <body>
 <div class="app">
   <div class="top">
-    <div><h1>금쌤국어_014 GitHub Pages 배포용</h1><div class="small">GitHub Pages 배포용 · Supabase 연결 + 로그인 + 수업/학생/출석 DB 저장</div></div>
+    <div><h1>금쌤국어_015 운영용</h1><div class="small">GitHub Pages 운영용 · 로그인 후 바로 사용</div></div>
     <div><span id="connBadge" class="badge warn">연결 전</span> <span id="userBadge" class="badge">로그인 전</span></div>
   </div>
 
   <div class="nav">
-    <button class="btn sub active" onclick="show('setup')">설정</button>
+    <button class="btn sub active" onclick="show('setup')">로그인</button>
     <button class="btn sub" onclick="show('classes')">수업 관리</button>
     <button class="btn sub" onclick="show('students')">학생 관리</button>
     <button class="btn sub" onclick="show('attendance')">출석 관리</button>
@@ -39,36 +39,36 @@ pre{white-space:pre-wrap;background:#2a211f;color:#fff;border-radius:14px;paddin
   </div>
 
   <section id="setup" class="active">
+    <input type="hidden" id="supabaseUrl" value="https://xvngnokfcuixyysxbqvi.supabase.co">
+    <input type="hidden" id="supabaseKey" value="sb_publishable_MsZjTYFJEAhQsvLUTkDt8Q_NETvCA3r">
+
     <div class="grid2">
       <div class="card">
-        <h2>1. Supabase 연결 설정</h2>
-        <p class="small">Project URL과 anon public key를 입력합니다. service_role key는 절대 넣지 마세요.</p>
-        <label>Supabase Project URL</label>
-        <input id="supabaseUrl" placeholder="https://xxxx.supabase.co">
-        <label>Supabase anon public key</label>
-        <input id="supabaseKey" placeholder="eyJhbGciOi...">
-        <button class="btn primary" onclick="saveConfig()">설정 저장</button>
-        <button class="btn sub" onclick="testConnection()">연결 테스트</button>
-      </div>
-      <div class="card">
-        <h2>2. 로그인</h2>
-        <label>이메일</label><input id="email" type="email">
-        <label>비밀번호</label><input id="password" type="password">
-        <button class="btn primary" onclick="signUp()">회원가입</button>
-        <button class="btn gold" onclick="signIn()">로그인</button>
+        <h2>로그인</h2>
+        <p class="small">금쌤국어 계정으로 로그인하면 수업, 학생, 출석 데이터가 Supabase 서버에 저장됩니다.</p>
+        <label>이메일</label>
+        <input id="email" type="email" placeholder="이메일을 입력하세요">
+        <label>비밀번호</label>
+        <input id="password" type="password" placeholder="비밀번호를 입력하세요">
+        <button class="btn primary" onclick="signIn()">로그인</button>
+        <button class="btn sub" onclick="signUp()">회원가입</button>
         <button class="btn danger" onclick="signOut()">로그아웃</button>
         <div id="authMsg" class="small"></div>
       </div>
-    </div>
-    <div class="card">
-      <h2>진행 순서</h2>
-      <ol class="small">
-        <li>Supabase 프로젝트 생성</li>
-        <li><code>금쌤국어_014_supabase_schema.sql</code> 내용을 SQL Editor에서 실행</li>
-        <li>Project URL과 anon key 입력</li>
-        <li>회원가입 또는 로그인</li>
-        <li>수업 → 학생 → 출석 순서로 테스트</li>
-      </ol>
+
+      <div class="card">
+        <h2>사용 순서</h2>
+        <ol class="small">
+          <li>로그인</li>
+          <li>수업 관리에서 수업 등록</li>
+          <li>학생 관리에서 학생을 수업에 연결</li>
+          <li>출석 관리에서 출석 저장</li>
+          <li>데이터는 Supabase 서버에 자동 저장</li>
+        </ol>
+        <p class="small">
+          이제 Supabase URL/key를 입력할 필요가 없습니다. GitHub Pages 주소로 접속해서 로그인만 하면 됩니다.
+        </p>
+      </div>
     </div>
   </section>
 
@@ -144,6 +144,9 @@ pre{white-space:pre-wrap;background:#2a211f;color:#fff;border-radius:14px;paddin
 </div>
 
 <script>
+const SUPABASE_URL = 'https://xvngnokfcuixyysxbqvi.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_MsZjTYFJEAhQsvLUTkDt8Q_NETvCA3r';
+
 let sb = null;
 let sessionUser = null;
 let classes = [], schedules = [], students = [], attendance = [];
@@ -152,12 +155,12 @@ let quickStatus = {};
 function $(id){return document.getElementById(id)}
 function esc(v){return String(v??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'","&#039;")}
 function today(){return new Date().toISOString().slice(0,10)}
-function getConfig(){return {url:localStorage.getItem('gk_supabase_url')||'',key:localStorage.getItem('gk_supabase_key')||''}}
+function getConfig(){return {url:SUPABASE_URL,key:SUPABASE_KEY}}
 function initClient(){
   const {url,key}=getConfig();
-  if(!url||!key){setConn(false,'설정 필요');return null}
+  if(!url||!key){setConn(false,'연결 준비');return null}
   sb = window.supabase.createClient(url,key);
-  setConn(true,'클라이언트 준비');
+  setConn(true,'서버 연결 준비');
   return sb;
 }
 function setConn(ok,msg){$('connBadge').className='badge '+(ok?'ok':'warn'); $('connBadge').textContent=msg}
@@ -165,11 +168,7 @@ function setUser(user){sessionUser=user; $('userBadge').className='badge '+(user
 function show(id){document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));event?.target?.classList?.add('active'); if(id!=='setup') loadAll();}
 function msg(t){$('authMsg').textContent=t}
 
-function saveConfig(){
-  localStorage.setItem('gk_supabase_url',$('supabaseUrl').value.trim());
-  localStorage.setItem('gk_supabase_key',$('supabaseKey').value.trim());
-  initClient(); msg('설정을 저장했습니다.');
-}
+function saveConfig(){initClient(); msg('운영용 연결 설정이 적용되어 있습니다.');}
 async function testConnection(){
   if(!initClient()) return;
   const {data,error}=await sb.from('classes').select('id').limit(1);
@@ -297,8 +296,8 @@ function renderAttendanceTable(){
 
 document.addEventListener('DOMContentLoaded',async()=>{
   $('attDate').value=today();
-  $('supabaseUrl').value=getConfig().url;
-  $('supabaseKey').value=getConfig().key;
+  if($('supabaseUrl')) $('supabaseUrl').value=getConfig().url;
+  if($('supabaseKey')) $('supabaseKey').value=getConfig().key;
   addScheduleRow();
   initClient();
   if(sb){const {data:{user}}=await sb.auth.getUser();setUser(user); if(user) await loadAll();}
